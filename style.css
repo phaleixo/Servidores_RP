@@ -1,0 +1,91 @@
+body {
+    color: var(--text-color); /* Cor do texto usando variável CSS */
+    margin: 0;
+    padding: 5px; /* Adicionei um valor para o padding */
+    font-family: Arial, sans-serif;
+    background: var(--bg-gradient); /* Fundo degradê usando variável CSS */
+    min-height: 100vh;
+  }
+
+  /* Definindo as cores do degradê para o modo claro */
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg-gradient: linear-gradient(to top, #f8f9fa, #e9ecef); /* Degradê para o modo claro */
+      --text-color: #212529; /* Cor do texto em modo claro */
+    }
+  }
+
+  /* Definindo as cores do degradê para o modo escuro */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg-gradient: linear-gradient(to top, #222222, #444444); /* Degradê para o modo escuro */
+      --text-color: #ffffff; /* Cor do texto em modo escuro */
+    }
+  }
+
+  .banner {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-top: 20px; /* Adiciona espaço na parte superior */
+  }
+  .profile-pic {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #ffffff;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  .container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 0 15px; /* Adiciona espaço nas laterais */
+  }
+  .linktree-item {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  .btn-linktree {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: var(--btn-bg-color); /* Cor de fundo do botão usando variável CSS */
+    color: var(--btn-text-color); /* Cor do texto do botão usando variável CSS */
+    text-align: center;
+    border: 1px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+  }
+  .btn-linktree i {
+    margin-right: 10px;
+  }
+  .btn-linktree:hover {
+    background-color: var(--btn-hover-bg-color); /* Cor de fundo do botão em hover usando variável CSS */
+  }
+
+  /* Outras configurações de cor dos botões */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --btn-bg-color: #444444; /* Cor de fundo do botão em modo escuro */
+      --btn-text-color: #ffffff; /* Cor do texto do botão em modo escuro */
+      --btn-hover-bg-color: #666666; /* Cor de fundo do botão em hover em modo escuro */
+    }
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --btn-bg-color: #c9c9c9; /* Cor de fundo do botão em modo escuro */
+      --btn-text-color: #000000; /* Cor do texto do botão em modo escuro */
+      --btn-hover-bg-color: #b5b5b5; /* Cor de fundo do botão em hover em modo escuro */
+    }
+  }
+
+  /* Remover sublinhado azul dos links visitados */
+  a:visited {
+    color: inherit; /* Mantém a cor do texto */
+  }
+
+  a:hover,
+  a:focus,
+  a:active {
+    text-decoration: none; /* Remove o sublinhado */
+  }
