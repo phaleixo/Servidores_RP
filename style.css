@@ -1,91 +1,57 @@
 body {
-    color: var(--text-color); /* Cor do texto usando variável CSS */
-    margin: 0;
-    padding: 5px; /* Adicionei um valor para o padding */
-    font-family: Arial, sans-serif;
-    background: var(--bg-gradient); /* Fundo degradê usando variável CSS */
-    min-height: 100vh;
+  transition: background-color 0.3s, color 0.3s;
+}
+/* Light Mode */
+body {
+  background-color: #ffffff;
+  color: #000000;
+}
+.navbar {
+  background-color: #f8f9fa;
+  color: #000000;
+}
+.navbar .nav-link {
+  color: #000000;
+}
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%280, 0, 0, 0.54%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+.footer {
+  background-color: #f8f9fa;
+}
+.list-group-item:hover {
+  background-color: #e9ecef;
+}
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+  body {
+      background-color: #050505;
+      color: #ffffff;
   }
-
-  /* Definindo as cores do degradê para o modo claro */
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg-gradient: linear-gradient(to top, #f8f9fa, #e9ecef); /* Degradê para o modo claro */
-      --text-color: #212529; /* Cor do texto em modo claro */
-    }
+  .navbar {
+      background-color: #121212;
+      color: #ffffff;
   }
-
-  /* Definindo as cores do degradê para o modo escuro */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg-gradient: linear-gradient(to top, #222222, #444444); /* Degradê para o modo escuro */
-      --text-color: #ffffff; /* Cor do texto em modo escuro */
-    }
+  .navbar .nav-link {
+      color: #ffffff;
   }
-
-  .banner {
-    text-align: center;
-    margin-bottom: 20px;
-    padding-top: 20px; /* Adiciona espaço na parte superior */
+  .navbar .navbar-toggler {
+      border-color: rgba(15, 15, 15, 0.1);
   }
-  .profile-pic {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 5px solid #ffffff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  .navbar .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba%28255, 255, 255, 1%29' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
   }
-  .container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 0 15px; /* Adiciona espaço nas laterais */
+  .list-group-item {
+      background-color: #1f1f1f;
+      border-color: #2a2a2a;
+      color: #ffffff;
   }
-  .linktree-item {
-    margin-bottom: 20px;
-    text-align: center;
+  .list-group-item:hover {
+      background-color: #343a40;
+      color: #ffffff;
   }
-  .btn-linktree {
-    display: block;
-    width: 100%;
-    padding: 10px;
-    background-color: var(--btn-bg-color); /* Cor de fundo do botão usando variável CSS */
-    color: var(--btn-text-color); /* Cor do texto do botão usando variável CSS */
-    text-align: center;
-    border: 1px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+  .footer {
+      background-color: #121212;
+      color: #ffffff;
   }
-  .btn-linktree i {
-    margin-right: 10px;
-  }
-  .btn-linktree:hover {
-    background-color: var(--btn-hover-bg-color); /* Cor de fundo do botão em hover usando variável CSS */
-  }
-
-  /* Outras configurações de cor dos botões */
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --btn-bg-color: #444444; /* Cor de fundo do botão em modo escuro */
-      --btn-text-color: #ffffff; /* Cor do texto do botão em modo escuro */
-      --btn-hover-bg-color: #666666; /* Cor de fundo do botão em hover em modo escuro */
-    }
-  }
-  @media (prefers-color-scheme: light) {
-    :root {
-      --btn-bg-color: #c9c9c9; /* Cor de fundo do botão em modo escuro */
-      --btn-text-color: #000000; /* Cor do texto do botão em modo escuro */
-      --btn-hover-bg-color: #b5b5b5; /* Cor de fundo do botão em hover em modo escuro */
-    }
-  }
-
-  /* Remover sublinhado azul dos links visitados */
-  a:visited {
-    color: inherit; /* Mantém a cor do texto */
-  }
-
-  a:hover,
-  a:focus,
-  a:active {
-    text-decoration: none; /* Remove o sublinhado */
-  }
+}

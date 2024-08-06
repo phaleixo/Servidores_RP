@@ -1,63 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Links de Aplicativos</title>
-        <!-- Bootstrap CSS -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-        <!-- Font Awesome CSS -->
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-        <link href="style.css" rel="stylesheet">
-
-    </head>
-    <body>
-
-        <div class="banner">
-            <img src="statics/logo.png" alt="Profile Picture" class="profile-pic">
-        </div>
-
-        <div class="banner">
-            <h2 class="h2" style="padding-bottom:30px";>Servidores Ribeirão Preto</h2>
-        </div>
-
-        <div class="container">
-            <div class="linktree-item">
-                <h5>Visualizar frequência, lançar plantões:</h5>
-                <a href="https://ribeiraopreto.izeus.com.br/ponto" class="btn-linktree"><i class="fas fa-clock" style="margin-right: 10px;"></i> Izeus</a>
-            </div>
-            <div class="linktree-item">
-                <h5>Holerite, envio e consulta de atestados:</h5>
-                <a href="https://pmribeiraopreto.smarapd.com.br/atendimentointerno/#!/login" class="btn-linktree"><i class="fas fa-file" style="margin-right: 10px;"></i> Smarapd</a>
-            </div>
-            <div class="linktree-item">
-                <h5>Protocolo, assinatura de férias e abonada:</h5>
-                <a href="https://ribeiraopreto.solarbpm.softplan.com.br/portal/" class="btn-linktree"><i class="fas fa-clipboard" style="margin-right: 10px;"></i> Solarbpm</a>
-            </div>
-            <div class="linktree-item">
-                <h5>Diario Oficial:</h5>
-                <a href="https://cespro.com.br/visualizarDiarioOficial.php?cdMunicipio=9314" class="btn-linktree"><i class="fas fa-home" style="margin-right: 10px;"></i> Diario Oficial</a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="/icons/icon-192x192.png">
+    <meta name="theme-color" content="#000000">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand d-none" href="#"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="termos.html" target="_blank">Termos de uso</a>
+                        <a class="nav-link" href="about.html" target="_blank">Sobre Nós</a>
+                    </li>
+                </ul>
             </div>
         </div>
-
-        <footer class="bg-body-tertiary text-center text-lg-start">
-            <!-- Copyright -->
-            <div class="container d-lg-flex justify-content-between align-items-center py-3">
-                <div class="text-center text-lg-start mb-3 mb-lg-0">
-                    © 2024 Copyright
-                </div>
-                <div>
-                    <a class="text-center p-3" href="termos.html" target="_blank">Termos de uso</a>
-                </div>
-            </div>
-        </footer>
-        
-        
-
-
-        <!-- Bootstrap JS (optional) -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <!-- Font Awesome JS -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
-    </body>
+    </nav>
+    <!-- Logo -->
+    <div class="text-center my-4">
+        <img src="statics/logo.png" alt="Logo" class="img-fluid rounded-circle" style="max-width: 85px;">
+    </div>
+    <!-- Título -->
+    <div class="container text-center my-3">
+        <h2 class="fs-4">Servidores Ribeirao Preto</h2>
+    </div>
+    <div class="container d-flex flex-column align-items-center">
+        <div class="list-group w-100">
+            <p>Visualizar frequencia, lançar plantões</p>
+            <a href="https://ribeiraopreto.izeus.com.br/ponto" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center justify-content-center mb-4 shadow-sm">
+                <i class="fas fa-clock mr-2"></i> Izeus
+            </a>
+            <p>Holerite, envio e consulta de atestados</p>
+            <a href="https://pmribeiraopreto.smarapd.com.br/atendimentointerno/#!/login" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center justify-content-center mb-4 shadow-sm">
+                <i class="fas fa-home mr-2"></i> Smarapd
+            </a>
+            <p>Protocolo assinatura de férias e abonada</p>
+            <a href="https://ribeiraopreto.solarbpm.softplan.com.br/portal/" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center justify-content-center mb-4 shadow-sm">
+                <i class="fas fa-file mr-2"></i> Solarbpm
+            </a>
+            <p>Diario Oficial</p>
+            <a href="https://cespro.com.br/visualizarDiarioOficial.php?cdMunicipio=9314"target="_blank" class="list-group-item list-group-item-action d-flex align-items-center justify-content-center mb-4 shadow-sm">
+                <i class="fas fa-clipboard mr-2"></i> Diario Oficial
+            </a>
+            <p>Telefones-uteis</p>
+            <a href="https://www.ribeiraopreto.sp.gov.br/portal/saude/telefones-uteis" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center justify-content-center mb-4 shadow-sm">
+                <i class="fas fa-clipboard mr-2"></i> Secretaria Municipal de Saúde
+            </a>
+        </div>
+    </div>
+    <!-- Footer -->
+    <footer class="footer py-4 mt-5">
+        <div class="container text-center">
+            <p>Agrega Links v 1.1.0</p>
+            <p class="mb-0">&copy; 2024 Plano9. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Font Awesome JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js').then(function(registration) {
+              console.log('Service Worker registrado com sucesso:', registration.scope);
+            }, function(error) {
+              console.log('Falha ao registrar o Service Worker:', error);
+            });
+          });
+        }
+      </script>
+</body>
 </html>

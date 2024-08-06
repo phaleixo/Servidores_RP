@@ -10,7 +10,7 @@ Este serviço é um agregador de links desenvolvido com o intuito de facilitar o
 Você só pode usar nosso serviço para os fins pretendidos, ou seja, para acessar os aplicativos da administração pública de Ribeirão Preto relacionados à gestão de funcionários municipais. Você não pode usar nosso serviço de maneira que possa danificar, desativar, sobrecarregar ou prejudicar o funcionamento do serviço. Você é responsável por garantir que seu acesso ao serviço esteja em conformidade com todas as leis e regulamentos aplicáveis.
 3. Privacidade e Armazenamento de Dados
 
-Este aplicativo não armazena nenhum tipo de dados, como logins e senhas, apenas disponibiliza os links para os aplicativos
+Este aplicativo não armazena nenhum tipo de dados, como logins e senhas, apenas disponibiliza os links para os aplicativos.
 4. Alterações nos Aplicativos de Terceiros
 
 Não nos responsabilizamos por quaisquer alterações nos aplicativos de terceiros listados em nosso serviço. Essas alterações podem incluir, mas não estão limitadas a, mudanças na interface do usuário, funcionalidade ou disponibilidade do serviço. Recomendamos que você verifique diretamente os aplicativos de terceiros para obter informações atualizadas sobre suas políticas, termos de serviço e quaisquer mudanças relevantes.
