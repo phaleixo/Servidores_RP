@@ -89,18 +89,6 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Font Awesome JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
-    <script src="scripts.js"></script>
-    <script>
-       if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-      console.log('Service Worker registrado com sucesso:', registration);
-    }).catch(function(error) {
-      console.log('Falha ao registrar o Service Worker:', error);
-    });
-  }
-    </script>
-
-
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
