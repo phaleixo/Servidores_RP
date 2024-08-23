@@ -7,7 +7,8 @@ self.addEventListener('install', (event) => {
         '/styles.css',
         '/about.html',
         '/termos.html',
-        '/icon-192x192.png',
+        '/statics/logo.png',
+        '/icon.png',
         '/icon-512x512.png'
       ]);
     })
