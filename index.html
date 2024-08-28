@@ -100,6 +100,28 @@
             console.log('Falha ao registrar o Service Worker:', error);
           });
         }
+
+        let deferredPrompt;
+
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    deferredPrompt = event;
+    document.getElementById('installButton').style.display = 'block';
+  });
+
+  document.getElementById('installButton').addEventListener('click', () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('Usuário aceitou instalar o PWA');
+        } else {
+          console.log('Usuário recusou instalar o PWA');
+        }
+        deferredPrompt = null;
+      });
+    }
+  });
     </script>
 
 </body>
