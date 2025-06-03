@@ -5,126 +5,258 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Servidores RP links</title>
     
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome CSS -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
+    <!-- Tailwind CSS via CDN with dark mode -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            100: '#E5E7EB',
+                            200: '#D1D5DB',
+                            300: '#9CA3AF',
+                            400: '#6B7280',
+                            500: '#4B5563',
+                            600: '#374151',
+                            700: '#1F2937',
+                            800: '#111827',
+                            900: '#0F172A',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="statics/logo.png">
     <meta name="theme-color">
+    
+    <style>
+        .link-card {
+            transition: all 0.3s ease;
+        }
+        .link-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        /* Smooth transition for dark mode */
+        body, .link-card, nav, footer {
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+    </style>
 </head>
 
-<button id="installButton" style="display: none; background-color:blue; color: white; border: none;">Clique aqui para instalar o app</button>
+<body class="min-h-screen flex flex-col bg-gray-50 dark:bg-dark-800">
+    <!-- Install Button -->
+    <button id="installButton" class="hidden fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full shadow-lg z-50 transition-colors duration-300 dark:bg-blue-700 dark:hover:bg-blue-800">
+        Instalar App
+    </button>
 
-<body class="d-flex flex-column min-vh-100">
-    
     <!-- Navbar -->
-    <nav class="navbar shadow">
-        <div class="container-fluid">
-            <a class="navbar-brand d-none" href="#"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="termos.html" target="_blank">Termos de uso</a>
-                        <a class="nav-link" href="about.html" target="_blank">Sobre Nós</a>
-                    </li>
-                </ul>
-             </div>
-            
+    <nav class="bg-white shadow-md dark:bg-dark-700">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="hidden md:flex items-center space-x-1">
+                        <a href="termos.html" target="_blank" class="px-3 py-2 text-gray-700 hover:text-blue-600 dark:text-dark-200 dark:hover:text-blue-400 text-sm font-medium">Termos de uso</a>
+                        <a href="about.html" target="_blank" class="px-3 py-2 text-gray-700 hover:text-blue-600 dark:text-dark-200 dark:hover:text-blue-400 text-sm font-medium">Sobre Nós</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button id="theme-toggle" class="text-gray-700 dark:text-dark-200 hover:bg-gray-100 dark:hover:bg-dark-600 p-2 rounded-full">
+                        <i id="theme-icon" class="fas fa-moon"></i>
+                    </button>
+                    
+                    <button id="mobile-menu-button" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-dark-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-dark-600 focus:outline-none">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
         
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-700">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="termos.html" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 dark:text-dark-200 dark:hover:text-blue-400 dark:hover:bg-dark-600">Termos de uso</a>
+                <a href="about.html" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 dark:text-dark-200 dark:hover:text-blue-400 dark:hover:bg-dark-600">Sobre Nós</a>
+            </div>
+        </div>
     </nav>
 
-    <!-- Logo -->
-    <div class="text-center my-4">
-        <img src="statics/logo.png" alt="Logo" class="img-fluid rounded-circle" style="max-width: 85px;">
-    </div>
-
-    <!-- Título -->
-    <div class="container text-center my-3">
-        <h3 class="fs-4">Servidores Ribeirão Preto</h3>
-    </div>
-
-    <!-- Links -->
-    <div class="container d-flex flex-column align-items-center">
-        <div class="list-group w-100">
-            <p>Visualizar Frequencia, Lançar Plantões</p>
-            <a href="https://ribeiraopreto.izeus.com.br/ponto" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center justify-content-center mb-4 shadow">
-                <i class="fas fa-clock mr-2 "></i> Izeus
-            </a>
-            <p>Holerite, Envio e Consulta de Atestados</p>
-            <a href="https://pmribeiraopreto.smarapd.com.br/atendimentointerno/#!/login" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center justify-content-center mb-4 shadow">
-                <i class="fas fa-home mr-2 "></i> Smarapd
-            </a>
-            <p>Protocolo, Assinatura de férias e Abonada</p>
-            <a href="https://processodigital.ribeiraopreto.sp.gov.br/login/" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center justify-content-center mb-4 shadow">
-                <i class="fas fa-file mr-2 "></i> Solarbpm
-            </a>
-            <p>Diário Oficial</p>
-            <a href="https://cespro.com.br/visualizarDiarioOficial.php?cdMunicipio=9314" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center justify-content-center mb-4 shadow">
-                <i class="fas fa-clipboard mr-2 "></i> Diário Oficial
-            </a>
-            <p>Telefones Úteis</p>
-            <a href="https://www.ribeiraopreto.sp.gov.br/portal/saude/telefones-uteis" target="_blank" class=" list-group-item list-group-item-action d-flex align-items-center justify-content-center mb-4 shadow">
-                <i class="fas fa-clipboard mr-2 "></i> Secretaria Municipal de Saúde
-            </a>
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-6 max-w-md">
+        <!-- Logo -->
+        <div class="flex justify-center mb-6">
+            <img src="statics/logo.png" alt="Logo" class="h-20 w-20 rounded-full object-cover shadow-md border-2 border-white dark:border-dark-600">
         </div>
-    </div>
 
-    <!-- Instalação do App -->
-    <div id="install-banner" class="alert alert-info text-center" role="alert" style="display: none;">
-        <p>Instale o aplicativo no seu dispositivo para uma experiência melhor!</p>
-        <button id="install-button" class="btn btn-success">Instalar App</button>
-    </div>
+        <!-- Title -->
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-800 dark:text-dark-100">Servidores Ribeirão Preto</h1>
+        </div>
+
+        <!-- Links -->
+        <div class="space-y-6">
+            <div class="space-y-2">
+                <p class="text-sm font-medium text-gray-600 dark:text-dark-300">Visualizar Frequência, Lançar Plantões</p>
+                <a href="https://ribeiraopreto.izeus.com.br/ponto" target="_blank" class="link-card block w-full p-4 bg-white dark:bg-dark-700 rounded-lg shadow hover:shadow-md transition-all duration-300 border-l-4 border-blue-500 dark:border-blue-600">
+                    <div class="flex items-center justify-center space-x-2">
+                        <i class="fas fa-clock text-blue-500 dark:text-blue-400"></i>
+                        <span class="font-medium text-gray-800 dark:text-dark-100">Izeus</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="space-y-2">
+                <p class="text-sm font-medium text-gray-600 dark:text-dark-300">Holerite, Envio e Consulta de Atestados</p>
+                <a href="https://pmribeiraopreto.smarapd.com.br/atendimentointerno/#!/login" target="_blank" class="link-card block w-full p-4 bg-white dark:bg-dark-700 rounded-lg shadow hover:shadow-md transition-all duration-300 border-l-4 border-green-500 dark:border-green-600">
+                    <div class="flex items-center justify-center space-x-2">
+                        <i class="fas fa-home text-green-500 dark:text-green-400"></i>
+                        <span class="font-medium text-gray-800 dark:text-dark-100">Smarapd</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="space-y-2">
+                <p class="text-sm font-medium text-gray-600 dark:text-dark-300">Protocolo, Assinatura de férias e Abonada</p>
+                <a href="https://processodigital.ribeiraopreto.sp.gov.br/login/" target="_blank" class="link-card block w-full p-4 bg-white dark:bg-dark-700 rounded-lg shadow hover:shadow-md transition-all duration-300 border-l-4 border-purple-500 dark:border-purple-600">
+                    <div class="flex items-center justify-center space-x-2">
+                        <i class="fas fa-file text-purple-500 dark:text-purple-400"></i>
+                        <span class="font-medium text-gray-800 dark:text-dark-100">Solarbpm</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="space-y-2">
+                <p class="text-sm font-medium text-gray-600 dark:text-dark-300">Diário Oficial</p>
+                <a href="https://cespro.com.br/visualizarDiarioOficial.php?cdMunicipio=9314" target="_blank" class="link-card block w-full p-4 bg-white dark:bg-dark-700 rounded-lg shadow hover:shadow-md transition-all duration-300 border-l-4 border-yellow-500 dark:border-yellow-600">
+                    <div class="flex items-center justify-center space-x-2">
+                        <i class="fas fa-clipboard text-yellow-500 dark:text-yellow-400"></i>
+                        <span class="font-medium text-gray-800 dark:text-dark-100">Diário Oficial</span>
+                    </div>
+                </a>
+            </div>
+
+            <div class="space-y-2">
+                <p class="text-sm font-medium text-gray-600 dark:text-dark-300">Telefones Úteis</p>
+                <a href="https://www.ribeiraopreto.sp.gov.br/portal/saude/telefones-uteis" target="_blank" class="link-card block w-full p-4 bg-white dark:bg-dark-700 rounded-lg shadow hover:shadow-md transition-all duration-300 border-l-4 border-red-500 dark:border-red-600">
+                    <div class="flex items-center justify-center space-x-2">
+                        <i class="fas fa-phone-alt text-red-500 dark:text-red-400"></i>
+                        <span class="font-medium text-gray-800 dark:text-dark-100">Secretaria Municipal de Saúde</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Install Banner -->
+        <div id="install-banner" class="hidden mt-8 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-800 text-center">
+            <p class="text-blue-800 dark:text-blue-200 mb-3">Instale o aplicativo no seu dispositivo para uma experiência melhor!</p>
+            <button id="install-button" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors dark:bg-blue-700 dark:hover:bg-blue-800">
+                Instalar App
+            </button>
+        </div>
+    </main>
 
     <!-- Footer -->
-    <footer class="footer py-4 mt-5">
-        <div class="container text-center">
-            <p>Agrega Links v 1.2.0</p>
-            <p class="mb-0">&copy; 2024 Plano9. Todos os direitos reservados.</p>
+    <footer class="bg-white py-6 shadow-inner mt-8 dark:bg-dark-700">
+        <div class="container mx-auto px-4 text-center">
+            <p class="text-sm text-gray-600 dark:text-dark-300">Links v2.0.0</p>
+            <p class="text-sm text-gray-500 dark:text-dark-400 mt-1">&copy; 2025 Plano9. Todos os direitos reservados.</p>
         </div>
     </footer>
-    <!-- Bootstrap JS (optional) -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Font Awesome JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+    <!-- Scripts -->
     <script>
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        
+        // Check for saved user preference or system preference
+        if (localStorage.getItem('color-theme') === 'dark' || (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        } else {
+            document.documentElement.classList.remove('dark');
+            themeIcon.classList.replace('fa-sun', 'fa-moon');
+        }
+        
+        themeToggle.addEventListener('click', function() {
+            // Toggle icon
+            themeIcon.classList.toggle('fa-moon');
+            themeIcon.classList.toggle('fa-sun');
+            
+            // Toggle theme
+            if (document.documentElement.classList.contains('dark')) {
+                document.documentElement.classList.remove('dark');
+                localStorage.setItem('color-theme', 'light');
+            } else {
+                document.documentElement.classList.add('dark');
+                localStorage.setItem('color-theme', 'dark');
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // PWA Installation
         if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('sw.js').then(function(registration) {
-            console.log('Service Worker registrado com sucesso:', registration);
-          }).catch(function(error) {
-            console.log('Falha ao registrar o Service Worker:', error);
-          });
+            navigator.serviceWorker.register('sw.js').then(function(registration) {
+                console.log('Service Worker registrado com sucesso:', registration);
+            }).catch(function(error) {
+                console.log('Falha ao registrar o Service Worker:', error);
+            });
         }
 
         let deferredPrompt;
 
-  window.addEventListener('beforeinstallprompt', (event) => {
-    event.preventDefault();
-    deferredPrompt = event;
-    document.getElementById('installButton').style.display = 'block';
-  });
+        window.addEventListener('beforeinstallprompt', (event) => {
+            event.preventDefault();
+            deferredPrompt = event;
+            document.getElementById('installButton').classList.remove('hidden');
+            document.getElementById('install-banner').classList.remove('hidden');
+        });
 
-  document.getElementById('installButton').addEventListener('click', () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('Usuário aceitou instalar o PWA');
-        } else {
-          console.log('Usuário recusou instalar o PWA');
-        }
-        deferredPrompt = null;
-      });
-    }
-  });
+        document.getElementById('installButton').addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Usuário aceitou instalar o PWA');
+                        document.getElementById('installButton').classList.add('hidden');
+                        document.getElementById('install-banner').classList.add('hidden');
+                    } else {
+                        console.log('Usuário recusou instalar o PWA');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        });
+
+        document.getElementById('install-button').addEventListener('click', () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('Usuário aceitou instalar o PWA');
+                        document.getElementById('installButton').classList.add('hidden');
+                        document.getElementById('install-banner').classList.add('hidden');
+                    } else {
+                        console.log('Usuário recusou instalar o PWA');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        });
     </script>
-
 </body>
 </html>
