@@ -315,8 +315,7 @@
             } catch (error) {
                 console.error('Erro ao buscar dados meteorológicos:', error);
                 // Dados de fallback
-                document.getElementById('temperature').textContent = '24°C';
-                document.getElementById('humidity').textContent = 'Umidade: 45%';
+                
                 const now = new Date();
                 const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                 document.getElementById('update-time').textContent = `Atualizado: ${timeString}`;
