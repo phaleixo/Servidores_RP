@@ -97,23 +97,15 @@
 
        <!-- Weather Info (sem card) -->
         <div class="mb-6">
-            <div class="flex items-center justify-center">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-cloud-sun text-3xl text-gray-500 dark:text-white"></i></i>
-                    <div>
-                        <div class="flex items-center justify-between mb-6 text-xl font-semibold text-gray-700 dark:text-dark-200">
-                            <img src="icon.png" alt="Logo" class="w-8 h-8">
-                            <span>Ribeirão Preto</span>
-                        </div>
-                        <div class="flex items-baseline space-x-1">
-                            <span id="temperature" class="text-2xl font-bold text-gray-800 dark:text-dark-100">--°C</span>
-                        </div>
-                        <span id="humidity" class="text-sm text-gray-600 dark:text-dark-300">Umidade: --%</span>
-                        <div class="flex items-center space-x-4 mt-1">
-                            <span id="update-time" class="text-xs text-gray-500 dark:text-dark-400">Atualizado: --:--</span>
-                            <p class="text-xs text-gray-500 dark:text-dark-400">
-                                Fonte: <a href="https://redemet-homolog.decea.mil.br/" target="_blank" class="underline text-blue-500 hover:text-blue-700">Redemet</a>
-                            </p>
+            <div class="p-4 bg-white dark:bg-dark-700 rounded-lg shadow border-l-4 border-cyan-500 dark:border-cyan-600">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <i class="fas fa-cloud-sun text-3xl text-cyan-500 dark:text-cyan-400"></i>
+                        <div>
+                            <div class="flex items-baseline space-x-1">
+                                <span id="temperature" class="text-2xl font-bold text-gray-800 dark:text-dark-100">--°C</span>
+                            </div>
+                            <span id="humidity" class="text-sm text-gray-600 dark:text-dark-300">Umidade: --%</span>
                         </div>
                     </div>
                 </div>
@@ -178,12 +170,13 @@
             <p class="text-sm text-gray-500 dark:text-dark-400 mt-1">&copy; 2025 Plano9. Todos os direitos reservados.</p>
         </div>
     </footer>
+
     <!-- Scripts -->
     <script>
         // Dark mode toggle
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
-        
+
         // Check for saved user preference or system preference
         if (localStorage.getItem('color-theme') === 'dark' || (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
@@ -192,12 +185,12 @@
             document.documentElement.classList.remove('dark');
             themeIcon.classList.replace('fa-sun', 'fa-moon');
         }
-        
+
         themeToggle.addEventListener('click', function() {
             // Toggle icon
             themeIcon.classList.toggle('fa-moon');
             themeIcon.classList.toggle('fa-sun');
-            
+
             // Toggle theme
             if (document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.remove('dark');
@@ -276,18 +269,18 @@
                 console.log('Primeira linha (METAR):', metar);
                 // Extrair temperatura e ponto de orvalho (exemplo: "22/18")
                 const tempMatch = metar.match(/\s(\d{2})\/(\d{2})\s/);
-                
+
                 if (tempMatch) {
                     const temperature = tempMatch[1];
                     const dewPoint = tempMatch[2];
                     
                     // Calcular umidade relativa (fórmula simplificada)
                     const humidity = calculateHumidity(parseInt(temperature), parseInt(dewPoint));
-                    
+
                     // Atualizar a interface
                     document.getElementById('temperature').textContent = `${temperature}°C`;
                     document.getElementById('humidity').textContent = `Umidade: ${humidity}%`;
-                    
+
                     // Atualizar horário
                     const now = new Date();
                     const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
