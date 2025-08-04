@@ -276,47 +276,50 @@
             }
         });
 
-        // Weather Data Fetching and Update
+                // Weather Data Fetching and Update
         async function fetchWeatherData() {
             try {
-                // Simulação de dados - na implementação real, você faria uma requisição à API
                 const baseURL = 'http://redemet.decea.gov.br/api/consulta_automatica/index.php?local=sbrp&msg=metar&data_ini=' + getCurrentDate() + '&data_fim=' + getCurrentDate();
                 const corsProxyURL = 'https://corsproxy.io/?' + encodeURIComponent(baseURL);
 
                 const response = await fetch(corsProxyURL);
                 const data = await response.text();
                 console.log('Resposta bruta da API:', data);
-                // Processar o METAR (exemplo simplificado)
-                const metar = data.split('\n')[0]; // Pega a primeira linha do retorno
+
+                const metar = data.split('\n')[0];
                 console.log('Primeira linha (METAR):', metar);
-                // Extrair temperatura e ponto de orvalho (exemplo: "22/18")
-                const tempMatch = metar.match(/\s(\d{2})\/(\d{2})\s/);
-                
+
+                const tempMatch = metar.match(/\s(\d{2})\/(M?\d{2})\s/);
+
                 if (tempMatch) {
-                    const temperature = tempMatch[1];
-                    const dewPoint = tempMatch[2];
-                    
-                    // Calcular umidade relativa (fórmula simplificada)
-                    const humidity = calculateHumidity(parseInt(temperature), parseInt(dewPoint));
-                    
-                    // Atualizar a interface
+                    const temperature = parseInt(tempMatch[1]);
+                    let dewPointRaw = tempMatch[2];
+
+                    let dewPoint = 0;
+                    if (dewPointRaw.startsWith('M')) {
+                        dewPointRaw = dewPointRaw.replace('M', '');
+                        dewPoint = dewPointRaw === '00' ? 0 : -parseInt(dewPointRaw);
+                    } else {
+                        dewPoint = parseInt(dewPointRaw);
+                    }
+
+                    const humidity = calculateHumidity(temperature, dewPoint);
+
                     document.getElementById('temperature').textContent = `${temperature}°C`;
                     document.getElementById('humidity').textContent = `Umidade: ${humidity}%`;
-                    
-                    // Atualizar horário
+
                     const now = new Date();
                     const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                     document.getElementById('update-time').textContent = `Atualizado: ${timeString}`;
                 }
             } catch (error) {
                 console.error('Erro ao buscar dados meteorológicos:', error);
-                // Dados de fallback
-                
                 const now = new Date();
                 const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
                 document.getElementById('update-time').textContent = `Atualizado: ${timeString}`;
             }
         }
+
 
         function getCurrentDate() {
             const now = new Date();
