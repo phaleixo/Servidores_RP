@@ -4,8 +4,8 @@
     "description": "Um serviço para agregar links utéis.",
     "start_url": "./index.html",
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#000000 ",
+    "background_color": "#04295b",
+    "theme_color": "#04295b",
     "icons": [
       {
         "src": "src/img/logo.png",
