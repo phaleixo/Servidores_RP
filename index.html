@@ -1,344 +1,190 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Servidores RP links</title>
-    
-    <!-- Tailwind CSS via CDN with dark mode -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        dark: {
-                            100: '#E5E7EB',
-                            200: '#D1D5DB',
-                            300: '#9CA3AF',
-                            400: '#6B7280',
-                            500: '#4B5563',
-                            600: '#374151',
-                            700: '#1F2937',
-                            800: '#111827',
-                            900: '#0F172A',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- Font Awesome -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="statics/logo.png">
-    <meta name="theme-color">
-    
-    <style>
-        .link-card {
-            transition: all 0.3s ease;
-        }
-        .link-card:hover {
-            transform: translateY(-2px);
-        }
-        
-        /* Smooth transition for dark mode */
-        body, .link-card, nav, footer {
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-    </style>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Servidores Ribeirao - Sistemas</title>
 
-<body class="h-auto flex flex-col bg-gray-100 dark:bg-dark-800">
-    <!-- Install Button -->
-    <button id="installButton" class="hidden fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-full shadow-lg z-50 transition-colors duration-300 dark:bg-blue-700 dark:hover:bg-blue-800">
-        Instalar App
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#044884" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="src/js/main.js"></script>
+    <script src="service-worker.js"></script>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+  </head>
+
+  <body
+    class="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300"
+  >
+    <button
+      id="installButton"
+      class="hidden fixed top-4 right-4 z-50 bg-blue-600 text-white px-4 py-2 rounded-lg border-none cursor-pointer"
+    >
+      Instalar App
     </button>
 
-    <!-- Navbar -->
-    <nav class="bg-white shadow-md dark:bg-dark-700">
-        <div class="max-w-6xl mx-auto px-4">
-            <div class="flex justify-between h-16">
-                <div class="flex">
-                    <div class="hidden md:flex items-center space-x-1">
-                        <a href="termos.html" target="_blank" class="px-3 py-2 text-gray-700 hover:text-blue-600 dark:text-dark-200 dark:hover:text-blue-400 text-sm font-medium">Termos de uso</a>
-                        <a href="about.html" target="_blank" class="px-3 py-2 text-gray-700 hover:text-blue-600 dark:text-dark-200 dark:hover:text-blue-400 text-sm font-medium">Sobre Nós</a>
+    <div class="absolute top-4 right-4 z-50">
+      <button
+        id="theme-toggle"
+        class="p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-white"
+      >
+        <i id="theme-icon" class="fas fa-moon text-white text-lg"></i>
+      </button>
+    </div>
 
-                    </div>
-                </div>
-                <div class="flex items-center space-x-4">
-                    <!-- Dark mode toggle -->
-                    <button id="theme-toggle" class="text-gray-700 dark:text-dark-200 hover:bg-gray-100 dark:hover:bg-dark-600 p-2 rounded-full">
-                        <i id="theme-icon" class="fas fa-moon"></i>
-                    </button>
-                    
-                    <button id="mobile-menu-button" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-dark-200 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-100 dark:hover:bg-dark-600 focus:outline-none">
-                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        </svg>
-                    </button>
-                </div>
+    <main class="flex-grow">
+      <div
+        class="bg-gradient-to-r from-rp-blue to-rp-light-blue pt-8 pb-12 px-4"
+      >
+        <div class="max-w-md mx-auto grid grid-cols-3 items-center gap-4">
+          <!-- Weather Card na coluna esquerda -->
+          <div class="col-span-1">
+            <div class="rounded-xl p-2 text-left bg-transparent text-white">
+              <!-- Agrupamento do ícone e temperatura na mesma linha -->
+              <div class="flex items-center space-x-2">
+                <i class="fas fa-cloud-sun text-xl"></i>
+                <span id="temperature" class="text-2xl font-bold">--°C</span>
+              </div>
+              <span id="humidity" class="block text-[14px] whitespace-nowrap"
+                >Umidade: --%</span
+              >
+              <span id="update-time" class="block text-[8px]"
+                >Atualizado: --:--</span
+              >
+              <span class="block text-[8px]">
+                Fonte:
+                <a
+                  href="https://redemet-homolog.decea.mil.br/"
+                  target="_blank"
+                  class="underline text-white hover:text-white"
+                  >Redemet</a
+                >
+              </span>
             </div>
-            
-        </div>
-        
-        <!-- Mobile menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-dark-700">
-            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <a href="termos.html" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 dark:text-dark-200 dark:hover:text-blue-400 dark:hover:bg-dark-600">Termos de uso</a>
-                <a href="about.html" target="_blank" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 dark:text-dark-200 dark:hover:text-blue-400 dark:hover:bg-dark-600">Sobre Nós</a>
+          </div>
+          <!-- Logo centralizado na coluna central -->
+          <div class="col-span-1 flex justify-center">
+            <div class="relative">
+              <img
+                src="src/img/logo.png"
+                alt="Logo"
+                class="w-24 h-24 rounded-full shadow-lg border-4 border-white"
+              />
             </div>
+          </div>
+          <!-- Coluna vazia para equilíbrio -->
+          <div class="col-span-1"></div>
         </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="flex-grow container mx-auto px-4 py-6 max-w-md">
-       
-
-        <div class="flex items-center justify-center mb-8 space-x-4">
-        <img src="icon.png" alt="Logo" class="w-8 h-8">
-        <h1 class="text-xl font-bold text-gray-800 dark:text-dark-100">
-            Ribeirão Preto
+        <h1 class="text-2xl font-bold text-white text-center mt-4">
+          Servidores Ribeirão
         </h1>
+        <p class="text-white opacity-90 text-center mt-1">
+          Acesso rápido aos sistemas
+        </p>
+      </div>
+
+      <div class="w-full max-w-md mx-auto px-4 -mt-8">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6">
+          <h2 class="text-lg font-semibold text-center mb-4">Sistemas de RH</h2>
+
+          <a
+            href="https://ribeiraopreto.izeus.com.br/ponto"
+            target="_blank"
+            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 border-l-4 border-rp-blue"
+          >
+            <div
+              class="flex items-center justify-center w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 mr-3"
+            >
+              <i
+                class="fas fa-clock text-red-600 dark:text-red-400 text-lg"
+              ></i>
+            </div>
+            <div class="flex-1">
+              <span class="font-medium text-lg block">Izeus</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400"
+                >Visualizar Frequência, Lançar Plantões</span
+              >
+            </div>
+            <i class="fas fa-chevron-right text-gray-400 ml-2"></i>
+          </a>
+
+          <a
+            href="https://pmribeiraopreto.smarapd.com.br/atendimentointerno/#!/login"
+            target="_blank"
+            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 border-l-4 border-rp-blue"
+          >
+            <div
+              class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 mr-3"
+            >
+              <i
+                class="fas fa-user-circle text-blue-600 dark:text-blue-400 text-lg"
+              ></i>
+            </div>
+            <div class="flex-1">
+              <span class="font-medium text-lg block">Smarapd</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400"
+                >Holerite, Envio e Consulta de Atestados</span
+              >
+            </div>
+            <i class="fas fa-chevron-right text-gray-400 ml-2"></i>
+          </a>
+
+          <a
+            href="https://processodigital.ribeiraopreto.sp.gov.br/login/"
+            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 border-l-4 border-rp-blue"
+          >
+            <div
+              class="flex items-center justify-center w-10 h-10 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 mr-3"
+            >
+              <i
+                class="fas fa-calendar-alt text-cyan-600 dark:text-cyan-400 text-lg"
+              ></i>
+            </div>
+            <div class="flex-1">
+              <span class="font-medium text-lg block">Solarbpm</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400"
+                >Protocolo, Assinatura de férias e Abonada</span
+              >
+            </div>
+            <i class="fas fa-chevron-right text-gray-400 ml-2"></i>
+          </a>
+
+          <a
+            href="https://cespro.com.br/visualizarDiarioOficial.php?cdMunicipio=9314"
+            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 border-l-4 border-rp-blue"
+          >
+            <div
+              class="flex items-center justify-center w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-900/30 mr-3"
+            >
+              <i
+                class="fas fa-book text-slate-600 dark:text-slate-400 text-lg"
+              ></i>
+            </div>
+            <div class="flex-1">
+              <span class="font-medium text-lg block">Diário Oficial</span>
+              <span class="text-sm text-gray-500 dark:text-gray-400"
+                >Diário oficial municipal</span
+              >
+            </div>
+            <i class="fas fa-chevron-right text-gray-400 ml-2"></i>
+          </a>
         </div>
-
-        <!-- Weather Card -->
-        <div class="mb-6">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-cloud-sun text-3xl text-cyan-500 dark:text-cyan-400"></i>
-                    <div>
-                        <div class="flex items-baseline space-x-1">
-                            <span id="temperature" class="text-2xl font-bold text-gray-800 dark:text-dark-100">--°C</span>
-                        </div>
-                        <span id="humidity" class="text-sm text-gray-600 dark:text-dark-300 block">Umidade: --%</span>
-                        <div class="flex items-center space-x-4 mt-1">
-                            <span id="update-time" class="text-xs text-gray-500 dark:text-dark-400">Atualizado: --:--</span>
-                            <span class="text-xs text-gray-500 dark:text-dark-400">
-                                Fonte: <a href="https://redemet-homolog.decea.mil.br/" target="_blank" class="underline text-blue-500 hover:text-blue-700">Redemet</a>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <!-- Links -->
-        <div class="space-y-6">
-            <div class="space-y-2">
-                <a href="https://ribeiraopreto.izeus.com.br/ponto" target="_blank" class="link-card block w-full p-4 bg-white dark:bg-dark-700 rounded-lg shadow hover:shadow-md transition-all duration-300 border-l-4 border-blue-500 dark:border-blue-600">
-                    <div class="flex items-center justify-center space-x-2">
-                        <i class="fas fa-clock text-blue-500 dark:text-blue-400"></i>
-                        <span class="font-medium text-gray-800 dark:text-dark-100">Izeus</span>
-                    </div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-dark-300 text-center mt-2">Visualizar Frequência, Lançar Plantões</p>
-
-                </a>
-            </div>
-
-            <div class="space-y-2">
-                <a href="https://pmribeiraopreto.smarapd.com.br/atendimentointerno/#!/login" target="_blank" class="link-card block w-full p-4 bg-white dark:bg-dark-700 rounded-lg shadow hover:shadow-md transition-all duration-300 border-l-4 border-green-500 dark:border-green-600">
-                    <div class="flex items-center justify-center space-x-2">
-                        <i class="fas fa-home text-green-500 dark:text-green-400"></i>
-                        <span class="font-medium text-gray-800 dark:text-dark-100">Smarapd</span>
-                    </div>
-                    <p class="text-sm font-medium text-gray-600 dark:text-dark-300 text-center mt-2">Holerite, Envio e Consulta de Atestados</p>
-
-                </a>
-            </div>
-
-            <div class="space-y-2">
-                <a href="https://processodigital.ribeiraopreto.sp.gov.br/login/" target="_blank" class="link-card block w-full p-4 bg-white dark:bg-dark-700 rounded-lg shadow hover:shadow-md transition-all duration-300 border-l-4 border-purple-500 dark:border-purple-600">
-                    <div class="flex items-center justify-center space-x-2">
-                        <i class="fas fa-file text-purple-500 dark:text-purple-400"></i>
-                        <span class="font-medium text-gray-800 dark:text-dark-100">Solarbpm</span>
-                    </div>
-                <p class="text-sm font-medium text-gray-600 dark:text-dark-300 text-center mt-2">Protocolo, Assinatura de férias e Abonada</p>
-
-                </a>
-            </div>
-
-            <div class="space-y-2">
-                <a href="https://cespro.com.br/visualizarDiarioOficial.php?cdMunicipio=9314" target="_blank" class="link-card block w-full p-4 bg-white dark:bg-dark-700 rounded-lg shadow hover:shadow-md transition-all duration-300 border-l-4 border-yellow-500 dark:border-yellow-600">
-                    <div class="flex items-center justify-center space-x-2">
-                        <i class="fas fa-clipboard text-yellow-500 dark:text-yellow-400"></i>
-                        <span class="font-medium text-gray-800 dark:text-dark-100">Diário Oficial</span>
-                    </div>
-                    <p class="text-xs font-medium text-gray-600 dark:text-dark-300 text-center mt-2">Diário oficial municipal</p>
-
-                </a>
-            </div>
-
-            
-
-        <!-- Install Banner -->
-        <div id="install-banner" class="hidden mt-8 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-800 text-center">
-            <p class="text-blue-800 dark:text-blue-200 mb-3">Instale o aplicativo no seu dispositivo para uma experiência melhor!</p>
-            <button id="install-button" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors dark:bg-blue-700 dark:hover:bg-blue-800">
-                Instalar App
-            </button>
-        </div>
+      </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white py-6 shadow-inner mt-14 dark:bg-dark-700">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-sm text-gray-600 dark:text-dark-300">Links v2.1.0</p>
-            <p class="text-sm text-gray-500 dark:text-dark-400 mt-1">&copy; 2025 Plano9. Todos os direitos reservados.</p>
-        </div>
+    <footer class="w-full text-center p-6 bg-rp-blue dark:bg-rp-blue">
+      <div class="text-sm text-white">
+        <p class="font-medium">
+          Site não afiliado a Prefeitura de Ribeirão Preto
+        </p>
+        <p class="mt-1">V2.2.0 &copy; 2025 - Licença GPL V2</p>
+        <a href="/termos.html" class="underline text-white">Termos de Uso</a>
+      </div>
     </footer>
-
-    <!-- Scripts -->
-    <script>
-        // Dark mode toggle
-        const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        
-        // Check for saved user preference or system preference
-        if (localStorage.getItem('color-theme') === 'dark' || (!localStorage.getItem('color-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark');
-            themeIcon.classList.replace('fa-moon', 'fa-sun');
-        } else {
-            document.documentElement.classList.remove('dark');
-            themeIcon.classList.replace('fa-sun', 'fa-moon');
-        }
-        
-        themeToggle.addEventListener('click', function() {
-            // Toggle icon
-            themeIcon.classList.toggle('fa-moon');
-            themeIcon.classList.toggle('fa-sun');
-            
-            // Toggle theme
-            if (document.documentElement.classList.contains('dark')) {
-                document.documentElement.classList.remove('dark');
-                localStorage.setItem('color-theme', 'light');
-            } else {
-                document.documentElement.classList.add('dark');
-                localStorage.setItem('color-theme', 'dark');
-            }
-        });
-
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-button').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
-
-        // PWA Installation
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').then(function(registration) {
-                console.log('Service Worker registrado com sucesso:', registration);
-            }).catch(function(error) {
-                console.log('Falha ao registrar o Service Worker:', error);
-            });
-        }
-
-        let deferredPrompt;
-
-        window.addEventListener('beforeinstallprompt', (event) => {
-            event.preventDefault();
-            deferredPrompt = event;
-            document.getElementById('installButton').classList.remove('hidden');
-            document.getElementById('install-banner').classList.remove('hidden');
-        });
-
-        document.getElementById('installButton').addEventListener('click', () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Usuário aceitou instalar o PWA');
-                        document.getElementById('installButton').classList.add('hidden');
-                        document.getElementById('install-banner').classList.add('hidden');
-                    } else {
-                        console.log('Usuário recusou instalar o PWA');
-                    }
-                    deferredPrompt = null;
-                });
-            }
-        });
-
-        document.getElementById('install-button').addEventListener('click', () => {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('Usuário aceitou instalar o PWA');
-                        document.getElementById('installButton').classList.add('hidden');
-                        document.getElementById('install-banner').classList.add('hidden');
-                    } else {
-                        console.log('Usuário recusou instalar o PWA');
-                    }
-                    deferredPrompt = null;
-                });
-            }
-        });
-
-                // Weather Data Fetching and Update
-        async function fetchWeatherData() {
-            try {
-                const baseURL = 'http://redemet.decea.gov.br/api/consulta_automatica/index.php?local=sbrp&msg=metar&data_ini=' + getCurrentDate() + '&data_fim=' + getCurrentDate();
-                const corsProxyURL = 'https://corsproxy.io/?' + encodeURIComponent(baseURL);
-
-                const response = await fetch(corsProxyURL);
-                const data = await response.text();
-                console.log('Resposta bruta da API:', data);
-
-                const metar = data.split('\n')[0];
-                console.log('Primeira linha (METAR):', metar);
-
-                const tempMatch = metar.match(/\s(\d{2})\/(M?\d{2})\s/);
-
-                if (tempMatch) {
-                    const temperature = parseInt(tempMatch[1]);
-                    let dewPointRaw = tempMatch[2];
-
-                    let dewPoint = 0;
-                    if (dewPointRaw.startsWith('M')) {
-                        dewPointRaw = dewPointRaw.replace('M', '');
-                        dewPoint = dewPointRaw === '00' ? 0 : -parseInt(dewPointRaw);
-                    } else {
-                        dewPoint = parseInt(dewPointRaw);
-                    }
-
-                    const humidity = calculateHumidity(temperature, dewPoint);
-
-                    document.getElementById('temperature').textContent = `${temperature}°C`;
-                    document.getElementById('humidity').textContent = `Umidade: ${humidity}%`;
-
-                    const now = new Date();
-                    const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                    document.getElementById('update-time').textContent = `Atualizado: ${timeString}`;
-                }
-            } catch (error) {
-                console.error('Erro ao buscar dados meteorológicos:', error);
-                const now = new Date();
-                const timeString = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-                document.getElementById('update-time').textContent = `Atualizado: ${timeString}`;
-            }
-        }
-
-
-        function getCurrentDate() {
-            const now = new Date();
-            now.setHours(now.getHours()+3); // Adiciona 3 horas
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            return `${year}${month}${day}`;
-        }
-
-        function calculateHumidity(temp, dewPoint) {
-            // Fórmula simplificada para umidade relativa
-            const humidity = 100 * (Math.exp((17.625 * dewPoint)/(243.04 + dewPoint)) / Math.exp((17.625 * temp)/(243.04 + temp)));
-            return Math.round(humidity);
-        }
-
-        // Atualizar a cada 2 minutos (120000 ms)
-        fetchWeatherData(); // Chamada inicial
-        setInterval(fetchWeatherData, 120000);
-    </script>
-</body>
+  </body>
 </html>
