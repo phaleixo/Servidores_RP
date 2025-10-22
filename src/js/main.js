@@ -75,48 +75,166 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // src/js/weather.js
 
+// Configurações da API
+const WEATHER_API_URL = 'https://weather-api-dun-mu.vercel.app/api/weather';
+const UPDATE_INTERVAL = 5 * 60 * 1000; // 5 minutos
+
+// Elementos DOM para o clima
+const temperatureElement = document.getElementById('temperature');
+const humidityElement = document.getElementById('humidity');
+const updateTimeElement = document.getElementById('update-time');
+const metarSummaryElement = document.getElementById('metar-summary');
+
+// Função principal para buscar dados do clima
 async function fetchWeatherData() {
-  const apiURL = "https://weather-api-dun-mu.vercel.app/api/weather";
-
-  // Seletores dos elementos no HTML
-  const tempEl = document.getElementById("temperature");
-  const humEl = document.getElementById("humidity");
-  const timeEl = document.getElementById("update-time");
-  const summaryEl = document.getElementById("metar-summary");
-
-  try {
-    // Busca os dados da API
-    const response = await fetch(apiURL, { cache: "no-cache" });
-    if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
-
-    const data = await response.json();
-
-    // Extrai dados esperados
-    const temp = data.temperature ?? "--";
-    const hum = data.humidity ?? "--";
-    const metar = data.metar_summary ?? "Sem informações disponíveis";
-
-    // Atualiza o HTML
-    tempEl.textContent = `${temp}°C`;
-    humEl.textContent = `Umidade: ${hum}%`;
-    summaryEl.textContent = metar;
-
-    // Atualiza horário da última atualização
-    const now = new Date();
-    const hora = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-    timeEl.textContent = `Atualizado: ${hora}`;
-  } catch (error) {
-    console.error("Erro ao buscar dados meteorológicos:", error);
-
-    tempEl.textContent = "--°C";
-    humEl.textContent = "Umidade: --%";
-    summaryEl.textContent = "Erro ao obter dados";
-    timeEl.textContent = "Atualizado: falha";
-  }
+    try {
+        console.log('🌤️ Buscando dados do clima...');
+        
+        const response = await fetch(WEATHER_API_URL);
+        
+        if (!response.ok) {
+            throw new Error(`Erro na API: ${response.status}`);
+        }
+        
+        const data = await response.json();
+        
+        if (data.error) {
+            throw new Error(data.error);
+        }
+        
+        updateWeatherDisplay(data);
+        console.log('✅ Dados do clima atualizados com sucesso');
+        
+    } catch (error) {
+        console.error('❌ Erro ao buscar dados do clima:', error);
+        showWeatherError();
+    }
 }
 
-// Atualiza ao carregar a página
-document.addEventListener("DOMContentLoaded", fetchWeatherData);
+// Função para atualizar a exibição dos dados do clima
+function updateWeatherDisplay(data) {
+    const { temperature, humidity, updatedAt } = data;
+    
+    // Atualizar temperatura
+    temperatureElement.textContent = `${temperature}°C`;
+    
+    // Atualizar umidade
+    humidityElement.textContent = `Umidade: ${humidity}%`;
+    
+    // Atualizar horário da última atualização
+    const formattedTime = formatUpdateTime(updatedAt);
+    updateTimeElement.textContent = `Atualizado: ${formattedTime}`;
+    
+    // Atualizar resumo METAR baseado nas condições
+    updateMetarSummary(temperature, humidity);
+    
+    // Atualizar ícone do clima baseado na temperatura
+    updateWeatherIcon(temperature, humidity);
+}
 
-// Atualiza a cada 2 minutos (120000 ms)
-setInterval(fetchWeatherData, 120000);
+// Função para formatar o horário de atualização
+function formatUpdateTime(dateString) {
+    const date = new Date(dateString);
+    
+    // Formato brasileiro: HH:MM
+    const options = {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'America/Sao_Paulo'
+    };
+    
+    return date.toLocaleTimeString('pt-BR', options);
+}
+
+// Função para atualizar o resumo METAR baseado nas condições
+function updateMetarSummary(temperature, humidity) {
+    let summary = '';
+    
+    if (temperature >= 30) {
+        summary = 'Quente e ';
+    } else if (temperature <= 15) {
+        summary = 'Frio e ';
+    } else {
+        summary = 'Agradável e ';
+    }
+    
+    if (humidity >= 70) {
+        summary += 'Úmido';
+    } else if (humidity <= 30) {
+        summary += 'Seco';
+    } else {
+        summary += 'Normal';
+    }
+    
+    metarSummaryElement.textContent = summary;
+}
+
+// Função para atualizar o ícone do clima baseado nas condições
+function updateWeatherIcon(temperature, humidity) {
+    const weatherIcon = document.querySelector('.fa-cloud-sun');
+    
+    if (!weatherIcon) return;
+    
+    // Remover classes existentes
+    weatherIcon.className = 'fas';
+    
+    // Definir ícone baseado nas condições
+    if (temperature >= 30) {
+        weatherIcon.classList.add('fa-sun');
+    } else if (temperature <= 15) {
+        weatherIcon.classList.add('fa-snowflake');
+    } else if (humidity >= 70) {
+        weatherIcon.classList.add('fa-cloud-rain');
+    } else {
+        weatherIcon.classList.add('fa-cloud-sun');
+    }
+}
+
+// Função para exibir estado de erro no clima
+function showWeatherError() {
+    temperatureElement.textContent = '--°C';
+    humidityElement.textContent = 'Umidade: --%';
+    updateTimeElement.textContent = 'Atualizado: Erro';
+    metarSummaryElement.textContent = 'Dados indisponíveis';
+    
+    // Resetar ícone para padrão
+    const weatherIcon = document.querySelector('.fa-cloud-sun');
+    if (weatherIcon) {
+        weatherIcon.className = 'fas fa-cloud-sun';
+    }
+}
+
+// Função para inicializar o monitor de clima
+function initWeatherMonitor() {
+    console.log('🌤️ Iniciando monitor de clima...');
+    
+    // Buscar dados imediatamente ao carregar
+    fetchWeatherData();
+    
+    // Configurar atualização automática
+    setInterval(fetchWeatherData, UPDATE_INTERVAL);
+    
+    // Adicionar evento de clique para atualização manual no card do clima
+    const weatherCard = document.querySelector('.rounded-xl.p-2');
+    if (weatherCard) {
+        weatherCard.style.cursor = 'pointer';
+        weatherCard.title = 'Clique para atualizar';
+        weatherCard.addEventListener('click', fetchWeatherData);
+    }
+    
+    console.log(`✅ Monitor de clima configurado (atualização a cada ${UPDATE_INTERVAL / 60000}min)`);
+}
+
+// Inicializar quando o DOM estiver carregado
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initWeatherMonitor);
+} else {
+    initWeatherMonitor();
+}
+
+// Adicionar ao escopo global para possível uso manual
+window.weatherApp = {
+    fetchWeatherData,
+    updateWeatherDisplay,
+    initWeatherMonitor
+};
