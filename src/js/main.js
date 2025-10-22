@@ -73,82 +73,128 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// Weather Data Fetching and Update
+// Weather Data Fetching and Update (usa endpoint Vercel fornecido)
 async function fetchWeatherData() {
   try {
-    const baseURL =
-      "http://redemet.decea.gov.br/api/consulta_automatica/index.php?local=sbrp&msg=metar&data_ini=" +
-      getCurrentDate() +
-      "&data_fim=" +
-      getCurrentDate();
-    const corsProxyURL = "https://corsproxy.io/?" + encodeURIComponent(baseURL);
+    const apiURL = "https://weather-api-dun-mu.vercel.app/api/weather";
 
-    const response = await fetch(corsProxyURL);
-    const data = await response.text();
-    console.log("Resposta bruta da API:", data);
+    let response;
+    try {
+      response = await fetch(apiURL);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    } catch (err) {
+      // Possível erro de rede ou CORS quando rodando em servidor local
+      console.warn(
+        "Primeira tentativa de fetch falhou, tentando via proxy (allorigins):",
+        err
+      );
+      // Usar proxy público como fallback para contornar CORS durante desenvolvimento
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(
+        apiURL
+      )}`;
+      response = await fetch(proxyUrl);
+      if (!response.ok) throw new Error(`HTTP proxy ${response.status}`);
+    }
 
-    const metar = data.split("\n")[0];
-    console.log("Primeira linha (METAR):", metar);
+    const json = await response.json();
+    // Log mínimo: somente em caso de erro (mantemos console.debug para desenvolvimento se necessário)
 
-    const tempMatch = metar.match(/\s(\d{2})\/(M?\d{2})\s/);
+    // Usar apenas os campos calculados pela API
+    // API pode retornar temperature ou temperatureC; preferimos temperature, senão fallback para temperatureC
+    const temperature = json.temperature ?? json.temperatureC;
+    const humidity = json.humidity;
+    // Corrigir nome de campo: API retorna updatedAt (com D maiúsculo)
+    const updatedAt = json.updatedAt ?? json.updateAt ?? json.update_at;
 
-    if (tempMatch) {
-      const temperature = parseInt(tempMatch[1]);
-      let dewPointRaw = tempMatch[2];
+    // Atualiza DOM com checagens de existência dos elementos
+    const tempEl = document.getElementById("temperature");
+    const humEl = document.getElementById("humidity");
+    const updateEl = document.getElementById("update-time");
+    const metarSummaryEl = document.getElementById("metar-summary");
 
-      let dewPoint = 0;
-      if (dewPointRaw.startsWith("M")) {
-        dewPointRaw = dewPointRaw.replace("M", "");
-        dewPoint = dewPointRaw === "00" ? 0 : -parseInt(dewPointRaw);
+    if (tempEl) {
+      if (
+        temperature !== undefined &&
+        temperature !== null &&
+        !isNaN(temperature)
+      ) {
+        // Exibir temperatura arredondada e unidade. A API retorna Celsius, então usamos °C.
+        tempEl.textContent = `${Math.round(temperature)}°C`;
       } else {
-        dewPoint = parseInt(dewPointRaw);
+        tempEl.textContent = "N/D";
+      }
+    }
+
+    if (humEl) {
+      humEl.textContent =
+        humidity !== undefined
+          ? `Umidade: ${Math.round(humidity)}%`
+          : "Umidade: N/D";
+    }
+
+    if (updateEl) {
+      // Usar apenas o timestamp fornecido pela API. A API já fornece uma string curta (ex: "09:22")
+      let timeString = "N/D";
+
+      if (updatedAt) {
+        // Se for uma string curta no formato HH:MM, usar diretamente; caso contrário, tentar parsear como Date
+        if (
+          typeof updatedAt === "string" &&
+          /^\d{1,2}:\d{2}$/.test(updatedAt.trim())
+        ) {
+          timeString = updatedAt.trim();
+        } else {
+          try {
+            const parsed = new Date(updatedAt);
+            if (!isNaN(parsed)) {
+              timeString = parsed.toLocaleTimeString("pt-BR", {
+                hour: "2-digit",
+                minute: "2-digit",
+              });
+            }
+          } catch (e) {
+            console.warn("Erro ao parsear updatedAt:", e);
+          }
+        }
       }
 
-      const humidity = calculateHumidity(temperature, dewPoint);
+      updateEl.textContent = `Atualizado: ${timeString}`;
+    }
 
-      document.getElementById("temperature").textContent = `${temperature}°C`;
-      document.getElementById("humidity").textContent = `Umidade: ${humidity}%`;
-
-      const now = new Date();
-      const timeString = now.toLocaleTimeString("pt-BR", {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-      document.getElementById(
-        "update-time"
-      ).textContent = `Atualizado: ${timeString}`;
+    // Mostrar um resumo simples do METAR (estação, temperatura, qnh) se disponível
+    if (metarSummaryEl) {
+      let summary = "--";
+      // A API pode fornecer o METAR bruto em json.metar ou json.raw
+      const raw = json.metar ?? json.raw ?? "";
+      if (raw && typeof raw === "string") {
+        // Tentativa simples de extrair estação (por exemplo SBRP) e temperatura (ex: 16/08 -> temperatura 16)
+        try {
+          const stationMatch = raw.match(/METAR\s+(\w+)/i);
+          const tempMatch = raw.match(/\b(\d{1,2})\/(\d{1,2})\b/);
+          const qnhMatch = raw.match(/Q(\d{4})\b/);
+          const parts = [];
+          if (stationMatch) parts.push(stationMatch[1]);
+          if (tempMatch) parts.push(`${tempMatch[1]}°C`);
+          if (qnhMatch) parts.push(`QNH ${qnhMatch[1]}hPa`);
+          if (parts.length) summary = parts.join(" • ");
+          else summary = raw.split("=")[0] || raw;
+        } catch (e) {
+          summary = raw.split("=")[0] || raw;
+        }
+      }
+      metarSummaryEl.textContent = summary;
     }
   } catch (error) {
     console.error("Erro ao buscar dados meteorológicos:", error);
-    const now = new Date();
-    const timeString = now.toLocaleTimeString("pt-BR", {
-      hour: "2-digit",
-      minute: "2-digit",
-    });
-    document.getElementById(
-      "update-time"
-    ).textContent = `Atualizado: ${timeString}`;
+    const tempEl = document.getElementById("temperature");
+    const humEl = document.getElementById("humidity");
+    const updateEl = document.getElementById("update-time");
+
+    if (tempEl) tempEl.textContent = "N/D";
+    if (humEl) humEl.textContent = "Umidade: N/D";
+    if (updateEl) updateEl.textContent = `Atualizado: N/D`;
   }
 }
-
-function getCurrentDate() {
-  const now = new Date();
-  now.setHours(now.getHours() + 3); // Adiciona 3 horas
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return `${year}${month}${day}`;
-}
-
-function calculateHumidity(temp, dewPoint) {
-  // Fórmula simplificada para umidade relativa
-  const humidity =
-    100 *
-    (Math.exp((17.625 * dewPoint) / (243.04 + dewPoint)) /
-      Math.exp((17.625 * temp) / (243.04 + temp)));
-  return Math.round(humidity);
-}
-
 // Atualizar a cada 2 minutos (120000 ms)
 fetchWeatherData(); // Chamada inicial
 setInterval(fetchWeatherData, 120000);
