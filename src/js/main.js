@@ -135,6 +135,9 @@ function updateWeatherDisplay(data) {
       minute: "2-digit",
       timeZone: "America/Sao_Paulo",
     });
+    // Atualizar elemento de hora, se existir
+    if (updateTimeElement)
+      updateTimeElement.textContent = `Atualizado às ${formattedTime}`;
 
     // Atualizar resumo METAR baseado nas condições
     updateMetarSummary(temperature, humidity);
@@ -145,9 +148,6 @@ function updateWeatherDisplay(data) {
     console.error("Erro ao atualizar display:", error);
   }
 }
-updateTimeElement.textContent = `Atualizado às ${formattedTime}`;
-
-
 
 // Função para atualizar o ícone do clima baseado nas condições
 function updateWeatherIcon(temperature, humidity) {
@@ -186,6 +186,31 @@ function updateWeatherIcon(temperature, humidity) {
     weatherIcon.className = `${baseClass} ${iconClass}`;
   } catch (error) {
     console.error("Erro ao atualizar ícone:", error);
+  }
+}
+
+// Função simples para atualizar um resumo METAR (placeholder)
+function updateMetarSummary(temperature, humidity) {
+  try {
+    const metarSummaryElement = document.getElementById("metar-summary");
+    if (!metarSummaryElement) return;
+
+    let summary = "";
+
+    if (typeof temperature === "number") {
+      if (temperature >= 30) summary = "Quente";
+      else if (temperature <= 15) summary = "Frio";
+      else summary = "Agradável";
+    }
+
+    if (typeof humidity === "number") {
+      if (humidity >= 70) summary += summary ? " e úmido" : "Úmido";
+      else if (humidity <= 30) summary += summary ? " e seco" : "Seco";
+    }
+
+    metarSummaryElement.textContent = summary || "Sem resumo disponível";
+  } catch (error) {
+    console.error("Erro em updateMetarSummary:", error);
   }
 }
 
