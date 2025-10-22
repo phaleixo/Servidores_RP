@@ -73,10 +73,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-// src/js/weather.js
 
 // Configurações da API
-const WEATHER_API_URL = 'https://weather-api-dun-mu.vercel.app/api/weather';
+const WEATHER_API_URL = 'https://api.allorigins.win/raw?url=https://weather-api-dun-mu.vercel.app/api/weather';
+
 const UPDATE_INTERVAL = 5 * 60 * 1000; // 5 minutos
 
 // Função principal para buscar dados do clima com tratamento de CORS
