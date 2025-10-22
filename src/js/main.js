@@ -74,55 +74,32 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Weather Data Fetching and Update (usa endpoint Vercel fornecido)
+// Função para buscar e atualizar dados meteorológicos
 async function fetchWeatherData() {
-  try {
-    const apiURL = "https://weather-api-dun-mu.vercel.app/api/weather";
+  const apiURL = "https://api.allorigins.win/raw?url=https://weather-api-dun-mu.vercel.app/api/weather";
 
-    let response;
-    try {
-      response = await fetch(apiURL);
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-    } catch (err) {
-      // Possível erro de rede ou CORS quando rodando em servidor local
-      console.warn(
-        "Primeira tentativa de fetch falhou, tentando via proxy (allorigins):",
-        err
-      );
-      // Usar proxy público como fallback para contornar CORS durante desenvolvimento
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(
-        apiURL
-      )}`;
-      response = await fetch(proxyUrl);
-      if (!response.ok) throw new Error(`HTTP proxy ${response.status}`);
-    }
+  const tempEl = document.getElementById("temperature");
+  const humEl = document.getElementById("humidity");
+  const updateEl = document.getElementById("update-time");
+  const metarSummaryEl = document.getElementById("metar-summary");
+
+  try {
+    const response = await fetch(apiURL, { cache: "no-cache" });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const json = await response.json();
-    // Log mínimo: somente em caso de erro (mantemos console.debug para desenvolvimento se necessário)
 
-    // Usar apenas os campos calculados pela API
-    // API pode retornar temperature ou temperatureC; preferimos temperature, senão fallback para temperatureC
+    // Extrai os campos principais
     const temperature = json.temperature ?? json.temperatureC;
     const humidity = json.humidity;
-    // Corrigir nome de campo: API retorna updatedAt (com D maiúsculo)
     const updatedAt = json.updatedAt ?? json.updateAt ?? json.update_at;
 
-    // Atualiza DOM com checagens de existência dos elementos
-    const tempEl = document.getElementById("temperature");
-    const humEl = document.getElementById("humidity");
-    const updateEl = document.getElementById("update-time");
-    const metarSummaryEl = document.getElementById("metar-summary");
-
+    // Atualiza elementos na tela
     if (tempEl) {
-      if (
-        temperature !== undefined &&
-        temperature !== null &&
-        !isNaN(temperature)
-      ) {
-        // Exibir temperatura arredondada e unidade. A API retorna Celsius, então usamos °C.
-        tempEl.textContent = `${Math.round(temperature)}°C`;
-      } else {
-        tempEl.textContent = "N/D";
-      }
+      tempEl.textContent =
+        temperature !== undefined && temperature !== null && !isNaN(temperature)
+          ? `${Math.round(temperature)}°C`
+          : "N/D";
     }
 
     if (humEl) {
@@ -133,15 +110,10 @@ async function fetchWeatherData() {
     }
 
     if (updateEl) {
-      // Usar apenas o timestamp fornecido pela API. A API já fornece uma string curta (ex: "09:22")
       let timeString = "N/D";
 
       if (updatedAt) {
-        // Se for uma string curta no formato HH:MM, usar diretamente; caso contrário, tentar parsear como Date
-        if (
-          typeof updatedAt === "string" &&
-          /^\d{1,2}:\d{2}$/.test(updatedAt.trim())
-        ) {
+        if (typeof updatedAt === "string" && /^\d{1,2}:\d{2}$/.test(updatedAt.trim())) {
           timeString = updatedAt.trim();
         } else {
           try {
@@ -161,13 +133,11 @@ async function fetchWeatherData() {
       updateEl.textContent = `Atualizado: ${timeString}`;
     }
 
-    // Mostrar um resumo simples do METAR (estação, temperatura, qnh) se disponível
+    // Exibe um resumo simples do METAR se disponível
     if (metarSummaryEl) {
       let summary = "--";
-      // A API pode fornecer o METAR bruto em json.metar ou json.raw
       const raw = json.metar ?? json.raw ?? "";
       if (raw && typeof raw === "string") {
-        // Tentativa simples de extrair estação (por exemplo SBRP) e temperatura (ex: 16/08 -> temperatura 16)
         try {
           const stationMatch = raw.match(/METAR\s+(\w+)/i);
           const tempMatch = raw.match(/\b(\d{1,2})\/(\d{1,2})\b/);
@@ -176,25 +146,45 @@ async function fetchWeatherData() {
           if (stationMatch) parts.push(stationMatch[1]);
           if (tempMatch) parts.push(`${tempMatch[1]}°C`);
           if (qnhMatch) parts.push(`QNH ${qnhMatch[1]}hPa`);
-          if (parts.length) summary = parts.join(" • ");
-          else summary = raw.split("=")[0] || raw;
-        } catch (e) {
-          summary = raw.split("=")[0] || raw;
+          summary = parts.length ? parts.join(" • ") : raw.split("=")[0];
+        } catch {
+          summary = raw.split("=")[0];
         }
       }
       metarSummaryEl.textContent = summary;
     }
+
+    // Salva dados no cache local
+    localStorage.setItem(
+      "weatherData",
+      JSON.stringify({
+        temperature,
+        humidity,
+        updatedAt,
+        metarSummary: metarSummaryEl?.textContent ?? "",
+        timestamp: Date.now(),
+      })
+    );
   } catch (error) {
     console.error("Erro ao buscar dados meteorológicos:", error);
-    const tempEl = document.getElementById("temperature");
-    const humEl = document.getElementById("humidity");
-    const updateEl = document.getElementById("update-time");
 
-    if (tempEl) tempEl.textContent = "N/D";
-    if (humEl) humEl.textContent = "Umidade: N/D";
-    if (updateEl) updateEl.textContent = `Atualizado: N/D`;
+    // Tenta restaurar do cache local
+    const cached = localStorage.getItem("weatherData");
+    if (cached) {
+      const { temperature, humidity, updatedAt, metarSummary } = JSON.parse(cached);
+      if (tempEl && temperature) tempEl.textContent = `${Math.round(temperature)}°C`;
+      if (humEl && humidity) humEl.textContent = `Umidade: ${Math.round(humidity)}%`;
+      if (updateEl && updatedAt) updateEl.textContent = `Atualizado: ${updatedAt}`;
+      if (metarSummaryEl && metarSummary) metarSummaryEl.textContent = metarSummary;
+    } else {
+      if (tempEl) tempEl.textContent = "N/D";
+      if (humEl) humEl.textContent = "Umidade: N/D";
+      if (updateEl) updateEl.textContent = "Atualizado: N/D";
+      if (metarSummaryEl) metarSummaryEl.textContent = "--";
+    }
   }
 }
-// Atualizar a cada 2 minutos (120000 ms)
-fetchWeatherData(); // Chamada inicial
+
+// Chamada inicial e atualização a cada 2 minutos
+fetchWeatherData();
 setInterval(fetchWeatherData, 120000);
