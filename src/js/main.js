@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 // Configurações da API
-const WEATHER_API_URL = "https://weather-api-dun-mu.vercel.app/api/weather";
+const WEATHER_API_URL = "https://weather-api-dun-mu.vercel.app/api/weather?force=true";
 
 const UPDATE_INTERVAL = 2 * 60 * 1000; // 2 minutos
 
