@@ -1,0 +1,32 @@
+/* Estilos extraídos do <head> do index.html */
+/* Transições suaves para o card de clima */
+#weather-icon,
+#temperature,
+#humidity,
+#update-time {
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  will-change: opacity, transform;
+}
+#weather-card.loading #weather-icon,
+#weather-card.loading #temperature,
+#weather-card.loading #humidity,
+#weather-card.loading #update-time {
+  opacity: 0.45;
+  transform: translateY(-4px) scale(0.995);
+}
+/* Fade-in do ícone quando mudar src */
+#weather-icon {
+  opacity: 1;
+}
+
+/* Aviso de baixa umidade */
+.low-humidity {
+  color: #ef4444; /* red-500 */
+  font-weight: 600;
+}
+
+/* Aviso de temperatura alta */
+.high-temperature {
+  color: #dc2626; /* red-600 */
+  font-weight: 700;
+}

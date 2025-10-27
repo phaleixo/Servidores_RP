@@ -9,7 +9,13 @@
     <meta name="theme-color" content="#044884" />
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="src/js/main.js"></script>
+    <link rel="stylesheet" href="src/css/styles.css" />
+    <script src="src/js/config.js"></script>
+    <script src="src/js/theme.js"></script>
+    <script src="src/js/sw-register.js"></script>
+    <script src="src/js/weather-ui.js"></script>
+    <script src="src/js/weather-api.js"></script>
+    <script src="src/js/init.js"></script>
     <script src="service-worker.js"></script>
 
     <link
@@ -44,10 +50,26 @@
         <div class="max-w-md mx-auto grid grid-cols-3 items-center gap-4">
           <!-- Weather Card na coluna esquerda -->
           <div class="col-span-1">
-            <div class="rounded-xl p-2 text-left bg-transparent text-white">
+            <div
+              id="weather-card"
+              class="rounded-xl p-2 text-left bg-transparent text-white"
+            >
               <!-- Agrupamento do ícone e temperatura na mesma linha -->
               <div class="flex items-center space-x-2">
-                <i class="fas fa-cloud-sun text-xl"></i>
+                <div id="weather-icon-wrapper" class="relative w-6 h-6">
+                  <img
+                    id="weather-icon"
+                    src="src/img/weather-default.svg"
+                    alt="Ícone do tempo"
+                    class="w-6 h-6 object-contain"
+                  />
+                  <!-- Spinner visível enquanto o ícone carrega -->
+                  <div
+                    id="weather-icon-spinner"
+                    class="hidden absolute inset-0 m-auto w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"
+                    aria-hidden="true"
+                  ></div>
+                </div>
                 <span id="temperature" class="text-2xl font-bold">--°C</span>
               </div>
               <span id="humidity" class="block text-[14px] whitespace-nowrap"
@@ -56,7 +78,7 @@
               <span id="update-time" class="block text-[8px]"
                 >Atualizado: --:--</span
               >
-              
+
               <span class="block text-[8px]">
                 Fonte:
                 <a
