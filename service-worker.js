@@ -1,4 +1,4 @@
-const CACHE_NAME = "ifsuldeminas-cache-v1";
+const CACHE_NAME = "servidoresrbp-cache-v1";
 const urlsToCache = [
   "/",
   "/index.html",
