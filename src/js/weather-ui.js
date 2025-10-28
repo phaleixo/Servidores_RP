@@ -71,13 +71,13 @@
       if (temperatureElement) temperatureElement.textContent = "--°C";
       if (temperatureElement) {
         try {
-          temperatureElement.classList.remove("high-temperature");
+          temperatureElement.classList.remove("font-extrabold");
         } catch (e) {}
       }
       if (humidityElement) humidityElement.textContent = "Umidade: --%";
       if (humidityElement) {
         try {
-          humidityElement.classList.remove("low-humidity");
+          humidityElement.classList.remove("text-red-500", "font-semibold");
         } catch (e) {}
       }
       if (updateTimeElement) updateTimeElement.textContent = "Atualizado: Erro";
@@ -125,23 +125,20 @@
       temperatureElement.textContent = `${temperature}°C`;
       humidityElement.textContent = `Umidade: ${humidity}%`;
 
-      // Destacar umidade baixa (<= 20%)
+      // Destacar estados (usar utilitários Tailwind via classes)
       try {
+        // umidade baixa -> texto em vermelho
         if (typeof humidity === "number" && humidity <= 20) {
-          humidityElement.classList.add("low-humidity");
+          humidityElement.classList.add("text-red-500", "font-semibold");
         } else {
-          humidityElement.classList.remove("low-humidity");
+          humidityElement.classList.remove("text-red-500", "font-semibold");
         }
-      } catch (e) {
-        // não crítico
-      }
 
-      // Destacar temperatura alta (>= 38°C)
-      try {
+        // temperatura alta -> apenas destaque de peso (cor permanece branca)
         if (typeof temperature === "number" && temperature >= 38) {
-          temperatureElement.classList.add("high-temperature");
+          temperatureElement.classList.add("font-extrabold");
         } else {
-          temperatureElement.classList.remove("high-temperature");
+          temperatureElement.classList.remove("font-extrabold");
         }
       } catch (e) {
         // não crítico

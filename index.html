@@ -8,6 +8,37 @@
     <link rel="manifest" href="manifest.json" />
     <meta name="theme-color" content="#044884" />
 
+    <script>
+      // Configura o Tailwind CDN para usar strategy 'class' no dark mode
+      try {
+        window.tailwind = window.tailwind || {};
+        window.tailwind.config = window.tailwind.config || {};
+        window.tailwind.config.darkMode = "class";
+      } catch (e) {
+        // não crítico
+      }
+    </script>
+    <script>
+      // Aplica o tema inicial imediatamente para evitar flash de tema (FOUC)
+      (function () {
+        try {
+          const saved = localStorage.getItem("theme");
+          if (saved === "dark") document.documentElement.classList.add("dark");
+          else if (saved === "light")
+            document.documentElement.classList.remove("dark");
+          else {
+            if (
+              window.matchMedia &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches
+            ) {
+              document.documentElement.classList.add("dark");
+            }
+          }
+        } catch (e) {
+          // não crítico
+        }
+      })();
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="src/css/styles.css" />
     <script src="src/js/config.js"></script>
@@ -25,11 +56,11 @@
   </head>
 
   <body
-    class="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 font-sans transition-colors duration-300"
+    class="flex flex-col min-h-screen bg-gradient-to-t from-[#021a3a] via-[#04295b] to-[#021224] text-gray-200 font-sans transition-colors duration-300"
   >
     <button
       id="installButton"
-      class="hidden fixed top-4 right-4 z-50 bg-blue-600 text-white px-4 py-2 rounded-lg border-none cursor-pointer"
+      class="hidden fixed top-4 right-4 z-50 bg-blue-600 text-white px-4 py-2 rounded-lg border-none cursor-pointer shadow-md dark:shadow-sm"
     >
       Instalar App
     </button>
@@ -44,9 +75,7 @@
     </div>
 
     <main class="flex-grow">
-      <div
-        class="bg-gradient-to-r from-rp-blue to-rp-light-blue pt-8 pb-12 px-4"
-      >
+      <div class="pt-8 pb-12 px-4">
         <div class="max-w-md mx-auto grid grid-cols-3 items-center gap-4">
           <!-- Weather Card na coluna esquerda -->
           <div class="col-span-1">
@@ -112,11 +141,11 @@
       </div>
 
       <div class="w-full max-w-md mx-auto px-4 -mt-8">
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6">
+        <div class="bg-gray-100 dark:bg-gray-800 rounded-xl shadow-lg p-6 mb-6">
           <a
             href="https://ribeiraopreto.izeus.com.br/ponto"
             target="_blank"
-            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 border-l-4 border-rp-light-blue"
+            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md dark:shadow-sm hover:shadow-lg dark:hover:shadow-md transition-all duration-200 border-l-4 border-rp-light-blue text-black dark:text-gray-200"
           >
             <div
               class="flex items-center justify-center w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 mr-3"
@@ -137,7 +166,7 @@
           <a
             href="https://pmribeiraopreto.smarapd.com.br/atendimentointerno/#!/login"
             target="_blank"
-            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 border-l-4 border-rp-light-blue"
+            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md dark:shadow-sm hover:shadow-lg dark:hover:shadow-md transition-all duration-200 border-l-4 border-rp-light-blue text-black dark:text-gray-200"
           >
             <div
               class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 mr-3"
@@ -157,7 +186,7 @@
 
           <a
             href="https://processodigital.ribeiraopreto.sp.gov.br/login/"
-            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 border-l-4 border-rp-light-blue"
+            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md dark:shadow-sm hover:shadow-lg dark:hover:shadow-md transition-all duration-200 border-l-4 border-rp-light-blue text-black dark:text-gray-200"
           >
             <div
               class="flex items-center justify-center w-10 h-10 rounded-lg bg-cyan-100 dark:bg-cyan-900/30 mr-3"
@@ -177,7 +206,7 @@
 
           <a
             href="https://cespro.com.br/visualizarDiarioOficial.php?cdMunicipio=9314"
-            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 border-l-4 border-rp-light-blue"
+            class="flex items-center w-full p-4 mb-4 bg-gray-50 dark:bg-gray-700 rounded-xl shadow-md dark:shadow-sm hover:shadow-lg dark:hover:shadow-md transition-all duration-200 border-l-4 border-rp-light-blue text-black dark:text-gray-200"
           >
             <div
               class="flex items-center justify-center w-10 h-10 rounded-lg bg-slate-200 dark:bg-slate-900/30 mr-3"
@@ -203,7 +232,7 @@
         <p class="font-medium">
           Site não afiliado à Prefeitura de Ribeirão Preto
         </p>
-        <p class="mt-1">V3.0.0 &copy; 2025 - Licença GPL V2</p>
+        <p class="mt-1">V2.2.0 &copy; 2025 - Licença GPL V2</p>
         <a href="termos.html" class="underline text-white">Termos de Uso</a>
       </div>
     </footer>
